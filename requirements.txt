@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+pydantic
+streamlit
+pandas
+requests
+plotly
+watchdog
+scikit-learn
+openpyxl

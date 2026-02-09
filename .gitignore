@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+.pub-cache/
+.pub/
+
+# Arduino
+*.elf
+*.hex
+*.bin
+*.lock
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project Specific
+data/raw/*
+!data/raw/README.md
+data/processed/*
+!data/processed/README.md
