@@ -17,7 +17,7 @@ API_URL = "http://localhost:8000/api/v1"
 st.title("🧠 Neurolex: Akıllı Stres & Erteleme Yönetim Sistemi")
 
 # Tabs
-tab1, tab2, tab3 = st.tabs(["⌚ Canlı Akıllı Saat", "📋 Öz-Değerlendirme (Anket)", "🧬 Biyolojik Analiz"])
+tab1, tab2, tab3, tab4 = st.tabs(["⌚ Canlı Akıllı Saat", "📋 Öz-Değerlendirme (Anket)", "🧬 Biyolojik Analiz", "🤖 Terapist Asistan"])
 
 # --- TAB 1: LIVE WATCH SIMULATION ---
 with tab1:
@@ -201,3 +201,95 @@ with tab3:
                     st.error("API Hatası")
             except Exception as e:
                 st.error(f"Bağlantı Hatası: {e}")
+
+# --- TAB 4: THERAPEUTIC ASSISTANT (CHATBOT) ---
+with tab4:
+    st.header("🤖 Neurolex Terapist Asistan")
+    st.markdown("Mental durumunuzu değerlendirmek ve size özel öneriler sunmak için buradayım.")
+
+    # Session State for Chat
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
+        # Initial trigger
+        st.session_state.therapy_responses = [] # List of answers
+        st.session_state.therapy_active = False
+
+    if st.button("Seansı Başlat / Sıfırla"):
+        st.session_state.messages = []
+        st.session_state.therapy_responses = []
+        st.session_state.therapy_active = True
+        
+        # Call API to get first question
+        try:
+            res = requests.post(f"{API_URL}/therapist/process", json={"responses": []})
+            if res.status_code == 200:
+                data = res.json()
+                st.session_state.messages.append({"role": "assistant", "content": data["question"], "options": data.get("options")})
+        except:
+            st.error("Asistan başlatılamadı.")
+
+    # Display Chat
+    for msg in st.session_state.messages:
+        with st.chat_message(msg["role"]):
+            st.write(msg["content"])
+            # If there was media content in the final messages
+            if "media_type" in msg:
+                if msg["media_type"] == "video":
+                    st.video(msg["media_content"])
+                elif msg["media_type"] == "song":
+                    st.markdown(f"[🎵 Şarkıyı Dinlemek İçin Tıklayın]({msg['media_content']})")
+
+    # Input Area (Active only if waiting for user input)
+    if st.session_state.get("therapy_active", False):
+        last_msg = st.session_state.messages[-1] if st.session_state.messages else None
+        
+        if last_msg and last_msg["role"] == "assistant" and "options" in last_msg and last_msg["options"]:
+            # Display Options
+            options = last_msg["options"]
+            selected_option = st.radio("Cevabınız:", options, key=f"radio_{len(st.session_state.therapy_responses)}")
+            
+            if st.button("Gönder", key=f"btn_{len(st.session_state.therapy_responses)}"):
+                # Add User Message
+                st.session_state.messages.append({"role": "user", "content": selected_option})
+                st.session_state.therapy_responses.append(selected_option)
+                st.rerun()
+                
+        # If user just sent a message, fetch next bot response
+        if last_msg and last_msg["role"] == "user":
+             try:
+                payload = {"responses": st.session_state.therapy_responses}
+                res = requests.post(f"{API_URL}/therapist/process", json=payload)
+                if res.status_code == 200:
+                    data = res.json()
+                    
+                    if data["status"] == "in_progress":
+                        st.session_state.messages.append({
+                            "role": "assistant", 
+                            "content": data["question"], 
+                            "options": data["options"]
+                        })
+                    else:
+                        # Complete
+                        final_msg = f"**Değerlendirme Tamamlandı.**\n\nRisk Seviyesi: **{data['risk_level'].upper()}** (%{data['score_percentage']})\n\n_{data['message']}_"
+                        msg_obj = {
+                            "role": "assistant", 
+                            "content": final_msg
+                        }
+                        
+                        # Handle content
+                        if data.get("content_type") == "video":
+                             msg_obj["media_type"] = "video"
+                             msg_obj["media_content"] = data["content"][0]
+                        elif data.get("content_type") == "song":
+                             msg_obj["media_type"] = "song"
+                             msg_obj["media_content"] = data["content"][0]
+                        elif data.get("content_type") == "contact":
+                             contact_list = "\n".join([f"- {c}" for c in data["content"]])
+                             msg_obj["content"] += f"\n\n**Önerilen Uzmanlar:**\n{contact_list}"
+                        
+                        st.session_state.messages.append(msg_obj)
+                        st.session_state.therapy_active = False # End session
+                    
+                    st.rerun()
+             except Exception as e:
+                 st.error(f"Hata: {e}")

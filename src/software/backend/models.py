@@ -34,3 +34,6 @@ class BiologicalData(BaseModel):
     hr: float
     eda: float
     temp: float
+
+class TherapySessionInput(BaseModel):
+    responses: list[str]

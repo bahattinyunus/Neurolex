@@ -1,8 +1,9 @@
 from fastapi import FastAPI, HTTPException
-from .models import SensorData, PredictionResponse, SurveyData, BiologicalData
+from .models import SensorData, PredictionResponse, SurveyData, BiologicalData, TherapySessionInput
 from ..ai.risk_engine import calculate_risk
 from ..ai.survey_model import predict_survey_stress
 from ..ai.biological_model import predict_biological_stress
+from ..ai.therapist import TherapeuticAssistant
 from datetime import datetime
 
 app = FastAPI(title="Neurolex API", version="0.1.0")
@@ -47,3 +48,7 @@ def predict_survey(data: SurveyData):
 def predict_biological(data: BiologicalData):
     score, label = predict_biological_stress(data.hr, data.eda, data.temp)
     return {"risk_score": score, "risk_label": label}
+
+@app.post("/api/v1/therapist/process")
+def process_therapy_session(data: TherapySessionInput):
+    return TherapeuticAssistant.process_session(data.responses)

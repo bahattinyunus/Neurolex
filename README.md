@@ -1,5 +1,7 @@
 # ⌚ Neurolex: Akıllı Saat Tabanlı Erteleme ve Stres Yönetim Asistanı
 
+> **📽️ [Proje Arayüz Videosunu İzle (Demo)](https://drive.google.com/file/d/1ILQGsIlqzhZ74MhJ7uXUHg4MKnDE0-ga/view?usp=sharing)**
+
 > **TÜBİTAK 2209-A Üniversite Öğrencileri Araştırma Projeleri Destekleme Programı** kapsamında desteklenmektedir.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
