@@ -81,9 +81,16 @@ Simülasyon ortamını kurmak için:
     ```
 
 2.  **Başlatma (3 Terminal):**
-    *   `uvicorn src.software.backend.main:app --reload` (AI Beyni)
-    *   `streamlit run src/web/dashboard/app.py` (Görsel Arayüz ve Saat Simülasyonu)
-    *   `python -m src.software.simulation.generator` (Sensör Veri Akışı)
+    *   **Kolay Başlatma (Tek Komut):**
+        ```bash
+        python run_neurodelay.py
+        ```
+        Bu komut Backend, Dashboard ve Simülasyonu aynı anda başlatır.
+
+    *   **Manuel Başlatma (Opsiyonel):**
+        *   `uvicorn src.software.backend.main:app --reload` (AI Beyni)
+        *   `streamlit run src/web/dashboard/app.py` (Görsel Arayüz ve Saat Simülasyonu)
+        *   `python -m src.software.simulation.generator` (Sensör Veri Akışı)
 
 ---
 
