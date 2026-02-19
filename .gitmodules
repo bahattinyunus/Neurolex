@@ -1,0 +1,3 @@
+[submodule "personalized.ml.for.stress.detection"]
+	path = personalized.ml.for.stress.detection
+	url = https://github.com/vickypar/personalized.ml.for.stress.detection.git
