@@ -3,8 +3,35 @@ import time
 import sys
 import os
 
+def check_dependencies():
+    """Checks if critical dependencies are installed."""
+    try:
+        import fastapi
+        import uvicorn
+        import streamlit
+        print("✅ Gerekli kütüphaneler kontrol edildi.")
+    except ImportError as e:
+        print(f"❌ Eksik kütüphane: {e.name}")
+        print("Lütfen şu komutu çalıştırın: pip install -r requirements.txt")
+        sys.exit(1)
+
+def check_submodule():
+    """Checks if the ML submodule is initialized."""
+    submodule_path = os.path.join(os.path.dirname(__file__), "personalized.ml.for.stress.detection")
+    if os.path.exists(submodule_path) and not os.listdir(submodule_path):
+        print("⚠️ Uyarı: 'personalized.ml.for.stress.detection' submodule boş görünüyor.")
+        print("Otomatik olarak başlatılıyor...")
+        try:
+            subprocess.run(["git", "submodule", "update", "--init", "--recursive"], check=True)
+            print("✅ Submodule başarıyla güncellendi.")
+        except subprocess.CalledProcessError:
+            print("❌ Submodule güncellenemedi. Lütfen manuel olarak 'git submodule update --init' çalıştırın.")
+
 def run_neurodelay():
     print("🧠 NeuroDelay: Sistem Başlatılıyor...")
+    
+    check_dependencies()
+    check_submodule()
     
     # 1. Backend (Uvicorn)
     print("🚀 Backend (API) başlatılıyor...")

@@ -58,6 +58,15 @@ graph TD
 
 ---
 
+## 🧬 Veri Bilimi ve Yapay Zeka Modülü
+
+Projemiz, stres tespiti için gelişmiş makine öğrenimi tekniklerini kullanır. Bu amaçla **`personalizd.ml.for.stress.detection`** submodule'ü projeye entegre edilmiştir.
+
+*   **Özellikler:** Kişiselleştirilmiş stres modelleri, çoklu veri seti analizi (SWELL, WESAD), ve fuzzy clustering.
+*   **Detaylar:** Daha fazla bilgi için [ilgili modülün README dosyasını](personalized.ml.for.stress.detection/README.md) inceleyebilirsiniz.
+
+---
+
 ## 📸 Prototip ve Simülasyon (MVP)
 
 Şu anda geliştirdiğimiz MVP, akıllı saat donanımını simüle eden gelişmiş bir dashboard içerir.
@@ -97,6 +106,7 @@ Simülasyon ortamını kurmak için:
 ## 📅 Geliştirme Takvimi
 
 *   [x] **Faz 1:** MVP Prototip ve Simülasyon (Tamamlandı).
+*   [x] **Faz 1.5:** İleri Seviye ML Modül Entegrasyonu (Tamamlandı).
 *   [ ] **Faz 2:** WearOS / WatchOS Uygulama Geliştirme.
 *   [ ] **Faz 3:** Gerçek cihazlarla (Samsung Galaxy Watch / Apple Watch) testler.
 *   [ ] **Faz 4:** Üniversite kampüsünde pilot çalışma.

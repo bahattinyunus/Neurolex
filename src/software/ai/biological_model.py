@@ -1,4 +1,19 @@
 
+"""
+Biological Model Module
+-----------------------
+This module is responsible for interpreting raw biological data (Heart Rate, EDA, etc.)
+into stress levels.
+
+INTEGRATION NOTE:
+This module is designed to work with the advanced ML models located in:
+`personalized.ml.for.stress.detection` submodule.
+
+As the models in that submodule (e.g., Fuzzy Clustering, Multitask Learning) are trained
+and exported (e.g. as .pkl or .onnx files), they should be loaded here to replace
+the heuristic fallback logic.
+"""
+
 import pickle
 import os
 import numpy as np
